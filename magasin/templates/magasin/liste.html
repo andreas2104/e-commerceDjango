@@ -2,15 +2,66 @@
 <html>
 <head>
   <title>Liste des produits</title>
+  <style>
+      body {
+          font-family: Arial, sans-serif;
+          background-color: #f4f4f4;
+          margin: 0;
+          padding: 20px;
+      }
+      h1 {
+          color: #333;
+      }
+      a {
+          display: inline-block;
+          margin-bottom: 20px;
+          color: #007bff;
+          text-decoration: none;
+      }
+      a:hover {
+          text-decoration: underline;
+      }
+      ul {
+          list-style-type: none;
+          padding: 0;
+      }
+      li {
+          background: #fff;
+          margin: 10px 0;
+          padding: 15px;
+          border-radius: 5px;
+          box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+      }
+      .empty-message {
+          color: #999;
+      }
+      .delete-button {
+          background-color: #d9534f;
+          color: white;
+          border: none;
+          padding: 5px 10px;
+          border-radius: 5px;
+          cursor: pointer;
+      }
+      .delete-button:hover {
+          background-color: #c9302c;
+      }
+  </style>
 </head>
 <body>
   <h1>Liste des produits</h1>
   <a href="{% url 'ajouter_produit' %}">Ajouter un produit</a>
   <ul>
     {% for produit in produits %}
-      <li>{{ produit.nom }} - {{ produit.prix }}€ - {{ produit.description }}</li>
+      <li>
+        {{ produit.nom }} - {{ produit.prix }}€ - {{ produit.description }}
+        <form action="{% url 'supprimer_produit' produit.id %}" method="post" style="display:inline;">
+          {% csrf_token %}
+          <button type="submit" class="delete-button">Supprimer</button>
+        </form>
+      </li>
     {% empty %}
-      <li>Aucun produit enregistré.</li>
+      <li class="empty-message">Aucun produit enregistré.</li>
     {% endfor %}
   </ul>
 </body>
